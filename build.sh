@@ -33,5 +33,7 @@ else
 	echo "meta-aesd layer already exists"
 fi
 
+sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
 set -e
 bitbake core-image-aesd
