@@ -10,9 +10,7 @@ SRC_URI = "git://git@github.com/cu-ecen-aeld/assignments-3-and-later-LeszTom.git
 #git@github.com:cu-ecen-aeld/assignments-3-and-later-LeszTom.git
 
 PV = "1.0+git${SRCPV}"
-# TODO: set to reference a specific commit hash in your assignment repo
-#SRCREV = "f99b82a5d4cb2a22810104f89d4126f52f4dfaba"
-SRCREV = "1d0ddb9ed66f92901d3168d96023a186a222f1ac"
+SRCREV = "17d97388646206cb67b408da7759b1c38b171a7f"
 
 # This sets your staging directory based on WORKDIR, where WORKDIR is defined at 
 # https://docs.yoctoproject.org/ref-manual/variables.html?highlight=workdir#term-WORKDIR
@@ -25,8 +23,13 @@ S = "${WORKDIR}/git/server"
 FILES:${PN} += "${bindir}/aesdsocket"
 # TODO: customize these as necessary for any libraries you need for your application
 # (and remove comment)
-TARGET_LDFLAGS += "-pthread -lrt"
-TARGET_CC_ARCH += "${LDFLAGS}"
+#TARGET_LDFLAGS += "-pthread -lrt"
+#TARGET_CC_ARCH += "${LDFLAGS}"
+
+#inherit cmake
+
+INITSCRIPT_PACKAGES="${PN}"
+INITSCRIPT_NAME:${PN}="aesdsocket-start-stop"
 
 do_configure () {
 	:
@@ -47,4 +50,7 @@ do_install () {
 
 	install -d ${D}${bindir}
 	install -m 0755 ${S}/aesdsocket ${D}${bindir}/
+
+	install -d ${D}${sysconfdir}/init.d
+	install -m 0755 ${S}/aesdsocket-start-stop ${D}${sysconfdir}/init.d
 }
